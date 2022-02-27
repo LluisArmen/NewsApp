@@ -9,34 +9,84 @@ import XCTest
 
 class NewsAppUITests: XCTestCase {
 
+    let app = XCUIApplication()
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
+        app.launch()
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    
+    func testAppLaunch() throws {
+        let title = app.staticTexts["Welcome"]
+        let description = app.staticTexts["With this app you can view the latest news obtained from https://newsapi.org"]
+        let options = app.staticTexts["The default Search Options are: \n language = fr"]
+        let getNewsButton = app.buttons["Get the News !"]
+        XCTAssertTrue(title.exists)
+        XCTAssertTrue(description.exists)
+        XCTAssertTrue(options.exists)
+        XCTAssertTrue(getNewsButton.exists)
+    }
+    
+    
+    func testLoadNewsFromAPI() throws {
+        let getNewsButton = app.buttons["Get the News !"]
+        getNewsButton.tap()
+        let message1 = app.staticTexts["Number of Articles:"].waitForExistence(timeout: 5)
+        let showArticlesButton = app.buttons["Show Articles"].waitForExistence(timeout: 5)
+        let restartButton = app.buttons["Restart"].waitForExistence(timeout: 5)
+        XCTAssertTrue(message1)
+        XCTAssertTrue(showArticlesButton)
+        XCTAssertTrue(restartButton)
+    }
+    
+    
+    func testLoadNewsReset() throws {
+        let getNewsButton = app.buttons["Get the News !"]
+        getNewsButton.tap()
+        _ = app.buttons["Restart"].waitForExistence(timeout: 5.0)
+        app.buttons["Restart"].tap()
+        
+        let expectation = expectation(
+            for: NSPredicate(format: "exists == FALSE"),
+            evaluatedWith: app.buttons["Restart"],
+            handler: .none
+        )
+        let result = XCTWaiter.wait(for: [expectation], timeout: 5.0)
+        XCTAssertEqual(result, .completed)
+    }
+    
+    
+    func testShowArticles() throws {
+        app.buttons["Get the News !"].tap()
+        _ = app.buttons["Show Articles"].waitForExistence(timeout: 5)
+        app.buttons["Show Articles"].tap()
+        let navBar = app.navigationBars["Your Articles"].staticTexts["Your Articles"].waitForExistence(timeout: 5)
+        XCTAssertTrue(navBar)
+        XCTAssertTrue(app.tables.element(boundBy: 0).cells.count > 0)
+    }
+    
+    
+    func testShowArticleDetail() throws {
+        app.buttons["Get the News !"].tap()
+        _ = app.buttons["Show Articles"].waitForExistence(timeout: 5)
+        app.buttons["Show Articles"].tap()
+        _ = app.navigationBars["Your Articles"].staticTexts["Your Articles"].waitForExistence(timeout: 5)
+        let articlesTable = app.tables
+        articlesTable.cells.element(boundBy: 0).tap()
+        let myScrollView = app.scrollViews.firstMatch
+        let myScrollViewText = myScrollView.staticTexts
+        let myScrollViewTitle = myScrollViewText.firstMatch
+        XCTAssertTrue(myScrollViewTitle.exists)
+        XCTAssertFalse(myScrollViewTitle.label == "No title")
     }
 
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
-    }
 }
