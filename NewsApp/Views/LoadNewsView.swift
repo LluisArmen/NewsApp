@@ -16,7 +16,10 @@ struct LoadNewsView: View {
     var body: some View {
         NavigationView {
             VStack {
-                
+                // MARK: HEADLINE
+                /** Welcome message and description
+                     - In this version of the code the user cannot interact with this part
+                 */
                 Group {
                     Text("Welcome")
                         .bold()
@@ -29,7 +32,11 @@ struct LoadNewsView: View {
                 .multilineTextAlignment(.center)
                 .padding()
                 
-                
+                // MARK: GET NEWS BUTTON
+                /**
+                 Button to get the news from the API using the default options:
+                    - language : fr
+                 */
                 Button(action: {
                     newsViewModel.getNews() { success, err  in
                         loadSuccess = success
@@ -40,15 +47,22 @@ struct LoadNewsView: View {
                     }
                 }) {
                     VStack {
-                        
                         Text("Get the News !")
                             .searchButtonStyle()
-                            
                         Text(errorMessage)
                             .foregroundColor(.red)
                     }
                 }
                 
+                // MARK: RESULTS
+                /**
+                 If the articles have been read and stored with success, it shows:
+                    - The amount of articles found
+                    - A button to see the articles list
+                    - A button to restart the search (in the future, the user will be able to change the options)
+                    
+                 If the articles could not be read, it an error message is shown in red
+                 */
                 Group {
                     if loadSuccess {
                         VStack {
@@ -80,10 +94,8 @@ struct LoadNewsView: View {
                 }
                 .padding(.top, 100)
                 
-                
                 Spacer()
-                
-                
+
             }
         }
         
@@ -98,7 +110,9 @@ struct LoadNewsView_Previews: PreviewProvider {
 }
 
 
+// MARK: EXTENSIONS
 
+// This extension is used to keep the format properties of the buttons in one place
 extension Text {
     func searchButtonStyle() -> some View {
         self.bold()

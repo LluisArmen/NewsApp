@@ -7,6 +7,11 @@
 
 import Foundation
 
+
+/****
+ The News model has been created using the same structure as described in the news API
+ https://newsapi.org/docs/endpoints/top-headlines
+ */
 struct News: Codable {
     
     let status: String?
@@ -22,6 +27,7 @@ struct News: Codable {
         let urlToImage: String?
         let publishedAt: Date
         let content: String?
+        // A unique ID for each article must be used
         var id: String {
             url ?? UUID().uuidString
         }
@@ -32,10 +38,10 @@ struct News: Codable {
         }
     }
     
-    private enum CodingKeys: String, CodingKey {
-        case status
-        case totalResults
-        case articles
-    }
+//    private enum CodingKeys: String, CodingKey {
+//        case status
+//        case totalResults
+//        case articles
+//    }
     
 }

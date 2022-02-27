@@ -13,7 +13,9 @@ struct ShowArticlesView: View {
     
     var body: some View {
         
+        // A list is used as a container to show the articles at each row
         List(newsViewModel.articles, id: \.id) {article in
+            // We put each article inside the view ARticlesListView
             ArticlesListView(article: article)
         }
         .navigationBarTitle(Text("Your Articles"))

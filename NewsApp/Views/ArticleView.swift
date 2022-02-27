@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+
+/****
+This view is used to show the detail of an article
+ */
 struct ArticleView: View {
     
     var article: News.Article
@@ -15,29 +19,42 @@ struct ArticleView: View {
         
         ScrollView {
             VStack {
+                // MARK: TITLE
                 Text(article.title ?? "No title")
                     .bold()
                     .font(.title)
                     .padding()
                 
+                // MARK: IMAGE
                 if article.urlToImage != nil {
-                    AsyncImage(
-                        url: URL(string: article.urlToImage!),
-                        content: { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        }, placeholder: {
-                            Color.gray
-                                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width*9/16)
-                        })
-                        .padding()
-                        .mask(RoundedRectangle(cornerRadius: 5))
+                    // From iOS 15 the method AsyncImage is available for images from URL
+                    if #available(iOS 15.0, *) {
+                        AsyncImage(
+                            url: URL(string: article.urlToImage!),
+                            content: { image in
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                            }, placeholder: {
+                                Color.gray
+                                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width*9/16)
+                            })
+                            .padding()
+                            .mask(RoundedRectangle(cornerRadius: 5))
+                    } else {
+                        // to do method for iOS version < 15.0
+                        RoundedRectangle(cornerRadius: 5)
+                            .fill(.gray)
+                            .frame(width: 100, height: 70)
+                    }
                 }
+                
+                // MARK: DESCRIPTION
                 Text(article.description ?? "No description found...")
                     .multilineTextAlignment(.center)
                     .padding()
                 
+                // MARK: URL
                 if article.url != nil {
                     Link( destination: URL(string: article.url!)!) {
                         Text("Read more...")
@@ -46,6 +63,8 @@ struct ArticleView: View {
                     }
                 } else {
                     Text("No more information available at the moment")
+                        .italic()
+                        .padding()
                 }
             }
         }

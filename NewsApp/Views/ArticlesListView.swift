@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+
+/****
+This view is represents one row of the list where the articles are displayed
+ */
 struct ArticlesListView: View {
     
     var article: News.Article
@@ -15,6 +19,7 @@ struct ArticlesListView: View {
         
         NavigationLink(destination: ArticleView(article: article)) {
             HStack {
+                // MARK: TITLE AND SOURCE
                 VStack (alignment: .leading, spacing: 5) {
                     Text(article.title ?? "article not found...")
                         .bold()
@@ -29,8 +34,9 @@ struct ArticlesListView: View {
                 
                 Spacer()
                 
+                // MARK: IMAGE
                 if article.urlToImage != nil {
-                    
+                    // From iOS 15 the method AsyncImage is available for images from URL
                     if #available(iOS 15.0, *) {
                         AsyncImage(
                             url: URL(string: article.urlToImage!),

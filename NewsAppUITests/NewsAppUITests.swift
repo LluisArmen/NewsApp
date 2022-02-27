@@ -25,6 +25,7 @@ class NewsAppUITests: XCTestCase {
     }
     
     
+    // Test the launch of the app
     func testAppLaunch() throws {
         let title = app.staticTexts["Welcome"]
         let description = app.staticTexts["With this app you can view the latest news obtained from https://newsapi.org"]
@@ -37,6 +38,7 @@ class NewsAppUITests: XCTestCase {
     }
     
     
+    // Test that the news are properly loaded by checking the elements displayed in the screen
     func testLoadNewsFromAPI() throws {
         let getNewsButton = app.buttons["Get the News !"]
         getNewsButton.tap()
@@ -49,12 +51,12 @@ class NewsAppUITests: XCTestCase {
     }
     
     
+    // Test the reset button to start over
     func testLoadNewsReset() throws {
         let getNewsButton = app.buttons["Get the News !"]
         getNewsButton.tap()
         _ = app.buttons["Restart"].waitForExistence(timeout: 5.0)
         app.buttons["Restart"].tap()
-        
         let expectation = expectation(
             for: NSPredicate(format: "exists == FALSE"),
             evaluatedWith: app.buttons["Restart"],
@@ -65,6 +67,7 @@ class NewsAppUITests: XCTestCase {
     }
     
     
+    // Test that the articles are shown in a lis when tapped the button
     func testShowArticles() throws {
         app.buttons["Get the News !"].tap()
         _ = app.buttons["Show Articles"].waitForExistence(timeout: 5)
@@ -75,13 +78,20 @@ class NewsAppUITests: XCTestCase {
     }
     
     
+    // Test that the detail of the article is properly displayed when tapping a row of the list
     func testShowArticleDetail() throws {
+        // tapp the button
         app.buttons["Get the News !"].tap()
+        // wait until articles are loaded and next button is displayed
         _ = app.buttons["Show Articles"].waitForExistence(timeout: 5)
+        // tap button
         app.buttons["Show Articles"].tap()
+        // wait until navigation bar is displayed from other view
         _ = app.navigationBars["Your Articles"].staticTexts["Your Articles"].waitForExistence(timeout: 5)
         let articlesTable = app.tables
+        // tap first element of the list
         articlesTable.cells.element(boundBy: 0).tap()
+        // check that the title of the article exists is correct
         let myScrollView = app.scrollViews.firstMatch
         let myScrollViewText = myScrollView.staticTexts
         let myScrollViewTitle = myScrollViewText.firstMatch
