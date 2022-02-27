@@ -85,6 +85,10 @@ The basic Unit tests and UI tests were quite simple. However, I had to spent som
 ## Other
 In the documentation you can find 3 methods for the API KEY. I have used the one that I knew, even if it is indicated that is not the safest, since the api key is appended in the url. However, in order to save some time I decided that it was not a priority for this exercice to do the research on the other methods.
 
+The app uses a method that is only available from iOS 15: AsyncImage. For the time being, a gray rectangle is used if the iOS version is older than 15.0, but a method to get image from url should be coded instead.
+
+The app has not been tested in different screen sizes, so it might not be 100% adapted for all cases.
+
 
 ## Time to develop the exercice
 I have used about 4h30 hours for the exercice:
