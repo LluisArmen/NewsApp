@@ -1,13 +1,13 @@
 # NewsApp
-This app collect News from newsapi.org API using options to filter the search and shows articles in a list. Then the user can see the detail of each article by tapping on it. Firthermore, if the user wants more information about the article, the url of the source is provided.
+This app collects News from newsapi.org API using options to filter the search and shows the articles in a list. Then, the user can see the detail of each article by tapping on it. Furthermore, if the user wants more information about the article, the url of the source is provided.
 
 
 ## Code Architecture
-The architecture that has been used is MVVM (as requested):
+The architecture that has been used is MVVM:
 
 ### Model
 Only one model, which represents the news. I have structured the model based on the information gathered from the documentation in https://newsapi.org/docs/
-The property articles follows the same structure as in the API: a list of Article. Thus, I have created another struct called Article inside News, with the properties of the articles obtained from the doc. 
+The property *articles* follows the same structure as in the API: a list of Article. So, I have created another struct called Article inside News, with the properties of the articles obtained from the doc. 
 
 
 ### View
@@ -19,7 +19,7 @@ There are 4 views in the App:
 
 
 **LoadNewsView**
-I have decided to create a first view that works as a landing page. The user sees a welcome message and a description of the app. The reason why I did this is because in the future, the user should be able to choose the search options before actually tapping the Search Button.
+I have decided to create a first view that works as a landing page. The user sees a welcome message and a description of the app. The reason why I did this is because in the future the user should be able to choose the search options before actually tapping the Search Button.
 
 When the Search Button is tapped, the news are read from the api usign the default options (language = french)
 
